@@ -1,0 +1,23 @@
+service: kms-demo
+frameworkVersion: '3'
+
+plugins:
+  - serverless-iam-roles-per-function
+
+provider:
+  name: aws
+  runtime: python3.8
+  stage: dev
+  region: us-east-1
+
+functions:
+  encrypt:
+    handler: encrypt.main
+    memorySize: 256
+    iamRoleStatementsName: kms-encrypt
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - kms:Encrypt
+          - kms:Decrypt
+        Resource: "arn:aws:kms:ap-southeast-1:848202840624:alias/symkey"
